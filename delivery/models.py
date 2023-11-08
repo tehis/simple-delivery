@@ -1,11 +1,8 @@
-from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin, User
-
-from pytz import timezone as tz
+from datetime import datetime
 from queue import Queue
 
-from datetime import datetime
+from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 delay_queue = Queue()
 
@@ -70,7 +67,6 @@ class DelayQueue(models.Model):
     This is the table for queue.
     """
 
-    # order = models.ForeignKey(Order, on_delete=models.CASCADE)
     report = models.ForeignKey(DelayReport, on_delete=models.CASCADE, related_name='delay_items')
     agent = models.ForeignKey(Agent, null=True, on_delete=models.SET_NULL)
     status = models.CharField(choices=DelayStatus.choices, max_length=2, default=DelayStatus.UNASSIGNED)

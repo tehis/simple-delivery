@@ -1,18 +1,17 @@
+from datetime import datetime, timedelta
+from enum import Enum
 from typing import List
 
-from delivery.models import Agent, Order, DelayReport, Trip, DeliveryStatus, DelayQueue, DelayStatus
-from rest_framework.response import Response
-from rest_framework import status
-from django.forms.models import model_to_dict
-from pytz import timezone as tz
-from django.db.models import Q
-from enum import Enum
-from delivery.serializers import DelayQueueReponseSerializer, DelayReportResponseSerializer
-from django.db.models import Sum
-
 import requests
+from django.db.models import Q, Sum
+from pytz import timezone as tz
+from rest_framework import status
+from rest_framework.response import Response
 
-from datetime import datetime, timedelta
+from delivery.models import (Agent, DelayQueue, DelayReport, DelayStatus,
+                             DeliveryStatus, Order, Trip)
+from delivery.serializers import (DelayQueueReponseSerializer,
+                                  DelayReportResponseSerializer)
 
 
 class DelatyreationStatus(Enum):
@@ -52,7 +51,7 @@ class AnnounceDelayService:
 
         if not trip or trip[0].status == DeliveryStatus.DELIVERED:
             if AnnounceDelayService._add_delay_to_queue(report) == DelatyreationStatus.CREATED:
-                return Response({'message': 'Order places in report queue'}, status=status.HTTP_200_OK)
+                return Response({'message': 'Order placed in report queue'}, status=status.HTTP_200_OK)
             return Response({'message': 'Order is in the queue already'}, status=status.HTTP_200_OK)
 
 
@@ -61,6 +60,7 @@ class AnnounceDelayService:
         res = requests.get(update_delay_endpoint)
 
         order.delivery_time += timedelta(minutes=30)
+        order.save()
         return Response({'new_delivery_time': order.delivery_time}, status=status.HTTP_200_OK)
 
 

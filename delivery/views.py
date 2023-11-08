@@ -1,11 +1,13 @@
-from rest_framework.views import APIView
-from rest_framework import status
-from delivery.serializers import AnnounceOrderDelaySerializer, DelayQueueSerializer
-from rest_framework.response import Response
-
-from delivery.services import AnnounceDelayService, DelayQueueService, DelayReportService
 from queue import Queue
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from delivery.serializers import (AnnounceOrderDelaySerializer,
+                                  DelayQueueSerializer)
+from delivery.services import (AnnounceDelayService, DelayQueueService,
+                               DelayReportService)
 
 
 class AnnounceOrderDelay(APIView):
@@ -23,7 +25,7 @@ class AnnounceOrderDelay(APIView):
 
 class DelayQueue(APIView):
     def get(self, request):
-        serializer = DelayQueueSerializer(data=request.data)
+        serializer = DelayQueueSerializer(data=request.query_params)
 
         if not serializer.is_valid():
             return Response(

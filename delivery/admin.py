@@ -1,5 +1,6 @@
 from django.contrib import admin
-from delivery.models import Agent, Order, Trip, Vendor, DelayQueue, DelayReport
+
+from delivery.models import Agent, DelayQueue, DelayReport, Order, Trip, Vendor
 
 
 @admin.register(Vendor)

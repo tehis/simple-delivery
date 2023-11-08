@@ -1,0 +1,7 @@
+django==4.2.5
+django-debug-toolbar==4.2.0
+djangorestframework==3.14.0
+requests==2.31.0
+typing_extensions==4.7.1
+pytest-django==4.5.2
+isort==5.12.0
